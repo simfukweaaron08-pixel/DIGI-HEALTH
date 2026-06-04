@@ -1,0 +1,606 @@
+/* ============================================================
+   DigiHealth — Student Login
+   Mobile-first CSS
+   ============================================================
+
+   Sections:
+   1.  CSS Variables
+   2.  Reset & Base
+   3.  Background Blobs
+   4.  Page Layout
+   5.  Form Panel
+   6.  Logo
+   7.  Page Heading
+   8.  Form & Fields
+   9.  Password Toggle
+   10. Error Messages
+   11. Forgot Link
+   12. Submit Button
+   13. Help Text
+   14. Info Panel (desktop only)
+   15. Responsive — Tablet 600px
+   16. Responsive — Desktop 900px
+   ============================================================ */
+
+/* ── 1. CSS Variables ── */
+:root {
+  --bg: #060e1c;
+  --card: #0c1a30;
+  --border: rgba(255, 255, 255, 0.09);
+  --border-focus: rgba(0, 210, 190, 0.55);
+
+  --teal: #00d4be;
+  --teal-dim: rgba(0, 212, 190, 0.1);
+  --teal-glow: rgba(0, 212, 190, 0.3);
+  --blue: #0080ff;
+
+  --text: #e6f0ff;
+  --text-muted: #6b87aa;
+  --error: #ff6b8a;
+
+  --font-head: "Syne", sans-serif;
+  --font-body: "DM Sans", sans-serif;
+
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 20px;
+  --r-xl: 28px;
+
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── 2. Reset & Base ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  min-height: 100dvh; /* dynamic viewport on mobile */
+  overflow-x: hidden;
+}
+
+a {
+  color: var(--teal);
+  text-decoration: none;
+  transition: color 0.2s var(--ease);
+}
+
+a:hover {
+  color: #00ffe8;
+  text-decoration: underline;
+}
+
+button {
+  font-family: var(--font-body);
+}
+
+/* ── 3. Background Blobs ── */
+.blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.blob--teal {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(
+    circle,
+    rgba(0, 212, 190, 0.15) 0%,
+    transparent 70%
+  );
+  top: -100px;
+  right: -80px;
+}
+
+.blob--blue {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(
+    circle,
+    rgba(0, 128, 255, 0.12) 0%,
+    transparent 70%
+  );
+  bottom: -60px;
+  left: -80px;
+}
+
+/* ── 4. Page Layout ── */
+.page {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* ── 5. Form Panel ── */
+.form-panel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px 24px;
+  background: var(--card);
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* ── 6. Logo ── */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.logo__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-sm);
+  background: linear-gradient(135deg, var(--teal), var(--blue));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 4px 16px var(--teal-glow);
+}
+
+.logo__name {
+  font-family: var(--font-head);
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1;
+}
+
+.logo__sub {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 3px;
+}
+
+/* ── 7. Page Heading ── */
+.page-heading {
+  margin-bottom: 32px;
+}
+
+.page-heading h1 {
+  font-family: var(--font-head);
+  font-size: clamp(1.75rem, 6vw, 2.25rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--text);
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.page-heading p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ── 8. Form & Fields ── */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+}
+
+.form__group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.form__label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.form__field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form__icon {
+  position: absolute;
+  left: 15px;
+  font-size: 14px;
+  color: var(--text-muted);
+  pointer-events: none;
+  transition: color 0.2s var(--ease);
+  z-index: 1;
+}
+
+.form__field:focus-within .form__icon {
+  color: var(--teal);
+}
+
+.form__input {
+  width: 100%;
+  height: 50px;
+  padding: 0 50px 0 44px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  outline: none;
+  transition:
+    border-color 0.2s var(--ease),
+    background 0.2s var(--ease),
+    box-shadow 0.2s var(--ease);
+  /* Fix iOS zoom on focus */
+  font-size: max(16px, 0.9rem);
+  -webkit-appearance: none;
+}
+
+.form__input::placeholder {
+  color: rgba(107, 135, 170, 0.45);
+}
+
+.form__input:focus {
+  border-color: var(--border-focus);
+  background: var(--teal-dim);
+  box-shadow: 0 0 0 3px rgba(0, 212, 190, 0.07);
+}
+
+/* Error state on input */
+.form__group.has-error .form__input {
+  border-color: rgba(255, 107, 138, 0.5);
+  background: rgba(255, 107, 138, 0.04);
+}
+
+/* ── 9. Password Toggle ── */
+.form__eye {
+  position: absolute;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition:
+    color 0.2s var(--ease),
+    background 0.2s var(--ease);
+  /* Ensure tap target on mobile */
+  touch-action: manipulation;
+}
+
+.form__eye:hover {
+  color: var(--teal);
+  background: var(--teal-dim);
+}
+
+/* ── 10. Error Messages ── */
+.form__error {
+  font-size: 0.77rem;
+  color: var(--error);
+  min-height: 14px;
+  padding-left: 2px;
+  /* Hidden by default */
+  opacity: 0;
+  transform: translateY(-3px);
+  transition:
+    opacity 0.2s var(--ease),
+    transform 0.2s var(--ease);
+  pointer-events: none;
+}
+
+.form__error.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── 11. Forgot Link ── */
+.form__row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -2px;
+}
+
+.link--forgot {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--teal);
+  /* Bigger tap area on mobile */
+  padding: 4px 0;
+  display: inline-block;
+}
+
+/* ── 12. Submit Button ── */
+.btn {
+  position: relative;
+  width: 100%;
+  height: 52px;
+  margin-top: 4px;
+  background: linear-gradient(135deg, var(--teal) 0%, var(--blue) 100%);
+  border: none;
+  border-radius: var(--r-md);
+  color: #fff;
+  font-family: var(--font-head);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  overflow: hidden;
+  box-shadow: 0 6px 24px var(--teal-glow);
+  transition:
+    transform 0.2s var(--ease),
+    box-shadow 0.2s var(--ease);
+  touch-action: manipulation;
+  -webkit-appearance: none;
+}
+
+/* Hover shimmer layer */
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12),
+    rgba(255, 255, 255, 0)
+  );
+  opacity: 0;
+  transition: opacity 0.25s var(--ease);
+}
+
+.btn:hover::after {
+  opacity: 1;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px var(--teal-glow);
+}
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn__label,
+.btn__arrow {
+  position: relative;
+  z-index: 1;
+}
+
+.btn__arrow {
+  font-size: 13px;
+  transition: transform 0.22s var(--ease);
+}
+
+.btn:hover .btn__arrow {
+  transform: translateX(4px);
+}
+
+/* Loading spinner */
+.btn__spinner {
+  display: none;
+  position: absolute;
+  z-index: 2;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.65s linear infinite;
+}
+
+.btn.loading .btn__label,
+.btn.loading .btn__arrow {
+  opacity: 0;
+}
+
+.btn.loading .btn__spinner {
+  display: block;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── 13. Help Text ── */
+.help-text {
+  margin-top: 28px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ── 14. Info Panel — hidden on mobile ── */
+.info-panel {
+  display: none;
+}
+
+/* ════════════════════════════════════════════════
+   15. Tablet — 600px+
+   ════════════════════════════════════════════════ */
+@media (min-width: 600px) {
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px;
+  }
+
+  .page {
+    width: 100%;
+    max-width: 460px;
+    min-height: unset;
+    border-radius: var(--r-xl);
+    overflow: hidden;
+    box-shadow:
+      0 24px 64px rgba(0, 0, 0, 0.6),
+      0 0 0 1px rgba(255, 255, 255, 0.06);
+  }
+
+  .form-panel {
+    min-height: unset;
+    padding: 48px 44px;
+    border-radius: var(--r-xl);
+  }
+}
+
+/* ════════════════════════════════════════════════
+   16. Desktop — 900px+ (two-panel layout)
+   ════════════════════════════════════════════════ */
+@media (min-width: 900px) {
+  body {
+    padding: 0;
+    overflow: hidden;
+    height: 100vh;
+  }
+
+  .page {
+    max-width: 1080px;
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+    box-shadow: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+
+  .form-panel {
+    border-radius: 0;
+    padding: 60px 56px;
+    border-right: 1px solid var(--border);
+    min-height: 100vh;
+  }
+
+  /* Info panel revealed on desktop */
+  .info-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 52px;
+    background: linear-gradient(
+      150deg,
+      rgba(0, 212, 190, 0.05) 0%,
+      rgba(0, 128, 255, 0.07) 100%
+    );
+    position: relative;
+    overflow: hidden;
+  }
+
+  .info-panel__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .info-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--teal-dim);
+    border: 1px solid var(--border-focus);
+    border-radius: 100px;
+    padding: 7px 16px;
+    font-size: 0.8rem;
+    color: var(--teal);
+    font-weight: 600;
+    width: fit-content;
+  }
+
+  .info-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .stat__num {
+    display: block;
+    font-family: var(--font-head);
+    font-size: 2.8rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .stat__label {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    margin-top: 4px;
+  }
+
+  .info-quote {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+    border-left: 2px solid var(--teal);
+    padding-left: 16px;
+    font-style: italic;
+  }
+
+  .dot-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+  }
+
+  .dot-grid span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--teal);
+    opacity: 0.2;
+  }
+
+  .dot-grid span:nth-child(even) {
+    background: var(--blue);
+  }
+}
