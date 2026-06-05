@@ -1,105 +1,53 @@
-{% extends 'base.html' %} {% block title %}DigiHealth — Login{% endblock %} {%
-block content %}
-<div class="blob blob--teal" aria-hidden="true"></div>
-<div class="blob blob--blue" aria-hidden="true"></div>
-<div class="page">
-  <section class="form-panel">
-    <header class="logo" id="logo">
-      <div class="logo__icon" aria-hidden="true">
-        <i class="fa-solid fa-heart-pulse"></i>
-      </div>
-      <div>
-        <p class="logo__name">DigiHealth</p>
-        <p class="logo__sub">UNZA Medical Portal</p>
-      </div>
-    </header>
-    <div class="page-heading" id="pageHeading">
-      <h1>Welcome back</h1>
-      <p>Sign in to your student account</p>
-    </div>
-    <form class="form" id="loginForm" novalidate>
-      <div class="form__group" id="groupId">
-        <label class="form__label" for="studentId">Student ID or Email</label>
-        <div class="form__field">
-          <i class="fa-regular fa-id-card form__icon" aria-hidden="true"></i>
-          <input
-            class="form__input"
-            type="text"
-            id="studentId"
-            name="studentId"
-            placeholder="22CS0145  or  you@unza.zm"
-            autocomplete="username"
-            spellcheck="false"
-          />
+    <form class="form" id="loginForm" method="post" action="/accounts/auth/login/" novalidate>
+        {% csrf_token %}
+        <div class="form__group" id="groupId">
+            <label class="form__label" for="username">Username or Email</label>
+            <div class="form__field">
+                <i class="fa-regular fa-id-card form__icon" aria-hidden="true"></i>
+                <input
+                    class="form__input"
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="faith or faith@test.com"
+                    autocomplete="username"
+                    spellcheck="false"
+                />
+            </div>
+            <p class="form__error" id="idError" role="alert"></p>
         </div>
-        <p class="form__error" id="idError" role="alert"></p>
-      </div>
-      <div class="form__group" id="groupPw">
-        <label class="form__label" for="password">Password</label>
-        <div class="form__field">
-          <i class="fa-solid fa-lock form__icon" aria-hidden="true"></i>
-          <input
-            class="form__input"
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Enter your password"
-            autocomplete="current-password"
-          />
-          <button
-            type="button"
-            class="form__eye"
-            id="eyeBtn"
-            aria-label="Toggle password visibility"
-          >
-            <i class="fa-regular fa-eye" id="eyeIcon" aria-hidden="true"></i>
-          </button>
+        <div class="form__group" id="groupPw">
+            <label class="form__label" for="password">Password</label>
+            <div class="form__field">
+                <i class="fa-solid fa-lock form__icon" aria-hidden="true"></i>
+                <input
+                    class="form__input"
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                />
+                <button
+                    type="button"
+                    class="form__eye"
+                    id="eyeBtn"
+                    aria-label="Toggle password visibility"
+                >
+                    <i class="fa-regular fa-eye" id="eyeIcon" aria-hidden="true"></i>
+                </button>
+            </div>
+            <p class="form__error" id="pwError" role="alert"></p>
         </div>
-        <p class="form__error" id="pwError" role="alert"></p>
-      </div>
-      <div class="form__row" id="formRow">
-        <a href="{% url 'password_reset' %}" class="link--forgot">Forgot password?</a>
-        <a href="{% url 'accounts:register_page' %}" class="link--forgot">Create an account</a>
-      </div>
-      <button type="submit" class="btn" id="submitBtn">
-        <span class="btn__label">Sign In</span>
-        <span class="btn__arrow" aria-hidden="true">
-          <i class="fa-solid fa-arrow-right"></i>
-        </span>
-        <span class="btn__spinner" aria-hidden="true"></span>
-      </button>
+        <div class="form__row" id="formRow">
+            <a href="#" class="link--forgot">Forgot password?</a>
+            <a href="/accounts/register/" class="link--forgot">Create an account</a>
+        </div>
+        <button type="submit" class="btn" id="submitBtn">
+            <span class="btn__label">Sign In</span>
+            <span class="btn__arrow" aria-hidden="true">
+                <i class="fa-solid fa-arrow-right"></i>
+            </span>
+            <span class="btn__spinner" aria-hidden="true"></span>
+        </button>
     </form>
-    <p class="help-text" id="helpText">
-      Need access? Contact the <a href="mailto:ict@unza.zm">IT Help Desk</a>
-    </p>
-  </section>
-  <aside class="info-panel" id="infoPanel" aria-hidden="true">
-    <div class="info-panel__inner">
-      <span class="info-badge">
-        <i class="fa-solid fa-shield-heart"></i>
-        Secure &amp; Private
-      </span>
-      <div class="info-stats">
-        <div class="stat">
-          <span class="stat__num">24/7</span>
-          <span class="stat__label">Health Support</span>
-        </div>
-        <div class="stat">
-          <span class="stat__num">100%</span>
-          <span class="stat__label">Digital Records</span>
-        </div>
-        <div class="stat">
-          <span class="stat__num">Fast</span>
-          <span class="stat__label">e-Prescriptions</span>
-        </div>
-      </div>
-      <blockquote class="info-quote">
-        "Your health, managed digitally — fast, private, and always available."
-      </blockquote>
-      <div class="dot-grid" aria-hidden="true">
-        {% for i in "12345678901234567890" %}<span></span>{% endfor %}
-      </div>
-    </div>
-  </aside>
-</div>
-{% endblock %}
