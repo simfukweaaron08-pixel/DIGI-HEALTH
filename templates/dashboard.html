@@ -1,0 +1,22 @@
+{% extends 'base.html' %} {% block title %}DigiHealth — Dashboard{% endblock %}
+{% block content %}
+<div class="dashboard-shell">
+  <header class="dashboard-header">
+    <div>
+      <p class="dashboard-label">Welcome back,</p>
+      <h1>{{ user.username }}</h1>
+      <p class="dashboard-sub">Your account email is {{ user.email }}</p>
+    </div>
+    <button class="btn btn--secondary" id="logoutBtn">Logout</button>
+  </header>
+  <section class="dashboard-content">
+    <div class="dashboard-card">
+      <h2>Secure student portal</h2>
+      <p>
+        Access your digital health records, appointments, and support
+        information.
+      </p>
+    </div>
+  </section>
+</div>
+{% endblock %}
