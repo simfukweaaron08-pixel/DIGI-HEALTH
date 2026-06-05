@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Write Prescription{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-success text-white">
+        <h4>💊 Prescription for {{ patient.get_full_name|default:patient.username }}</h4>
+        <small>Queue #{{ queue_number }}</small>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Medication Name</label>
+                {{ form.medication_name }}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Dosage</label>
+                {{ form.dosage }}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Frequency</label>
+                {{ form.frequency }}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Duration (days)</label>
+                {{ form.duration_days }}
+            </div>
+            <button type="submit" class="btn btn-success">💾 Save Prescription</button>
+            <a href="{% url 'doctor:dashboard' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

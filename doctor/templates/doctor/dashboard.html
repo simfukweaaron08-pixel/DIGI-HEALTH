@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block title %}Doctor Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Welcome Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h2 class="mb-0">
+                        <i class="bi bi-stethoscope me-2"></i>‍⚕️ Welcome, Dr. {{ user.get_full_name|default:user.username }}
+                    </h2>
+                    <p class="text-muted mb-0 mt-2">Manage your patient consultations and prescriptions</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-0">Waiting Patients</h6>
+                            <h2 class="mb-0 mt-2">{{ patients.count }}</h2>
+                        </div>
+                        <i class="bi bi-people-fill" style="font-size: 2.5rem; opacity: 0.5;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-0">In Consultation</h6>
+                            <h2 class="mb-0 mt-2">{{ patients|length }}</h2>
+                        </div>
+                        <i class="bi bi-activity" style="font-size: 2.5rem; opacity: 0.5;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-info text-white shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-0">Prescriptions Today</h6>
+                            <h2 class="mb-0 mt-2">0</h2>
+                        </div>
+                        <i class="bi bi-file-earmark-medical-fill" style="font-size: 2.5rem; opacity: 0.5;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Patients Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white border-0 py-3">
+                    <h5 class="mb-0">
+                        <i class="bi bi-clock-history me-2"></i>My Patients
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    {% if patients %}
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="py-3">Queue #</th>
+                                    <th class="py-3">Patient Name</th>
+                                    <th class="py-3">Status</th>
+                                    <th class="py-3">Check-in Time</th>
+                                    <th class="py-3">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for patient in patients %}
+                                <tr class="align-middle">
+                                    <td class="py-3">
+                                        <span class="badge bg-secondary rounded-pill">#{{ patient.queue_number }}</span>
+                                    </td>
+                                    <td class="py-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" 
+                                                 style="width: 40px; height: 40px; color: white; font-weight: bold;">
+                                                {{ patient.student.get_full_name|default:patient.username|slice:":1"|upper }}
+                                            </div>
+                                            <div>
+                                                <strong>{{ patient.student.get_full_name|default:patient.username }}</strong>
+                                                <br>
+                                                <small class="text-muted">{{ patient.student.email }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-3">
+                                        {% if patient.status == 'WAITING' %}
+                                            <span class="badge bg-warning text-dark">
+                                                <i class="bi bi-clock me-1"></i>Waiting
+                                            </span>
+                                        {% elif patient.status == 'IN_CONSULTATION' %}
+                                            <span class="badge bg-info">
+                                                <i class="bi bi-person-check me-1"></i>In Consultation
+                                            </span>
+                                        {% elif patient.status == 'PRESCRIPTION_READY' %}
+                                            <span class="badge bg-success">
+                                                <i class="bi bi-check-circle me-1"></i>Prescription Ready
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">{{ patient.get_status_display }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="py-3 text-muted">
+                                        <i class="bi bi-clock me-1"></i>{{ patient.check_in_time|date:"H:i" }}
+                                    </td>
+                                    <td class="py-3">
+                                        <a href="{% url 'doctor:create_prescription' patient.id %}" 
+                                           class="btn btn-primary btn-sm">
+                                            <i class="bi bi-prescription2 me-1"></i>Write Prescription
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i class="bi bi-inbox" style="font-size: 4rem; color: #dee2e6;"></i>
+                        <h5 class="mt-3 text-muted">No patients assigned to you right now</h5>
+                        <p class="text-muted">Patients will appear here when they join the queue</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+{% endblock %}
