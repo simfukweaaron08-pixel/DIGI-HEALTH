@@ -4,20 +4,22 @@ from django.contrib import messages
 from .forms import ConsultationForm
 
 @login_required
-def new_consultation(request):
+def create_consultation(request):
     if request.method == 'POST':
         form = ConsultationForm(request.POST, request.FILES)
+        
         if form.is_valid():
             consultation = form.save(commit=False)
-            consultation.student = request.user  # auto-attach logged-in student
+            consultation.student = request.user 
             consultation.save()
-            messages.success(request, 'Success! Your consultation has been sent. You will get a notification when a doctor replies.')
+            
+            messages.success(request, "Success! Your consultation has been sent. You will get a notification when a doctor replies.")
+            
             return redirect('consultation_success')
     else:
         form = ConsultationForm()
+        
+    return render(request, 'consultation/create_consultation.html', {'form': form})
 
-    return render(request, 'consultation/new_consultation.html', {'form': form})
-
-@login_required
 def consultation_success(request):
     return render(request, 'consultation/success.html')
