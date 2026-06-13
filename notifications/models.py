@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings  
 
 class Notification(models.Model):
     NOTIFICATION_TYPES = (
@@ -8,7 +8,8 @@ class Notification(models.Model):
         ('PHARMA', 'Prescription Ready'),
     )
 
-    recipient = models.ForeignKey(User, on_delete=models.CASCADE)
+    recipient = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    
     title = models.CharField(max_length=200)
     message = models.TextField()
     category = models.CharField(max_length=10, choices=NOTIFICATION_TYPES)
